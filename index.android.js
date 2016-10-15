@@ -15,6 +15,7 @@ import {
 import Splash from './scenes/splash';
 import Report from './scenes/report';
 import Chat from './scenes/chat';
+import NewReport from './scenes/NewReport';
 
 import Swiper from 'react-native-swiper';
 
@@ -24,19 +25,32 @@ export default class cunyplusplus extends Component {
 
     this.state = {
       showSplash: true,
-      index: 1,
-      autoPlay: false
+      addingNew: false
     }
   }
   _changeIndex() {
     this.refs['swiper'].scrollBy(1)
   }
+  _addNew() {
+    this.setState({addingNew: true}, () => {
+      this.refs['swiper'].scrollBy(2)
+    })
+  }
+  _closeReport() {
+    this.setState({addingNew: false})
+  }
   render() {
-    const { index, showSplash } = this.state;
+    const {showSplash, addingNew} = this.state;
     if (showSplash) {
       setTimeout(() => this.setState({showSplash: false}), 1000);
     }
+    
+    const screens = [
+      <Chat key="chat" back={this._changeIndex.bind(this)}/>,
+      <Report key="report" newReport={this._addNew.bind(this)}/>];
 
+    if (addingNew)
+      screens.push(<NewReport key="newReport" submit={this._closeReport.bind(this)}/>);
     return (
       this.state.showSplash? <Splash/>: 
       <Swiper
@@ -46,9 +60,7 @@ export default class cunyplusplus extends Component {
         showButtons={true}
         autoplay={this.state.autoPlay}
         index={1}>
-        <Chat back={this._changeIndex.bind(this)}/>
-        <Report />
-
+        {screens}
       </Swiper>
     )
 

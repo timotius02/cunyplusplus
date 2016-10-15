@@ -121,7 +121,7 @@ export default class Reports extends Component {
         <ActionButton
           buttonColor="rgb(30,89,174)"
           offsetY={10}
-          onPress={() => { console.log("hi")}}
+          onPress={() => this.props.newReport()}
         />
       </View>
     )
