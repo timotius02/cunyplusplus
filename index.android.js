@@ -16,6 +16,7 @@ import Splash from './scenes/splash';
 import Report from './scenes/report';
 import Chat from './scenes/chat';
 import NewReport from './scenes/NewReport';
+import TakePicture from './scenes/TakePicture';
 
 import Swiper from 'react-native-swiper';
 
@@ -52,6 +53,9 @@ export default class cunyplusplus extends Component {
     if (addingNew)
       screens.push(<NewReport key="newReport" submit={this._closeReport.bind(this)}/>);
     return (
+<<<<<<< HEAD
+      <TakePicture/>
+=======
       this.state.showSplash? <Splash/>: 
       <Swiper
         ref={'swiper'}
@@ -62,6 +66,7 @@ export default class cunyplusplus extends Component {
         index={1}>
         {screens}
       </Swiper>
+>>>>>>> 8e161b4fcf34cb2ed4cf098027be0540a431d660
     )
 
 
