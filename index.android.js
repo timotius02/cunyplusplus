@@ -16,6 +16,7 @@ import Splash from './scenes/splash';
 import Report from './scenes/report';
 import Chat from './scenes/chat';
 import NewReport from './scenes/NewReport';
+import TakePicture from './scenes/TakePicture';
 
 import Swiper from 'react-native-swiper';
 
@@ -39,7 +40,7 @@ export default class cunyplusplus extends Component {
     }
 
     return (
-      <NewReport/>
+      <TakePicture/>
     )
 
 
