@@ -26,21 +26,47 @@ export default class cunyplusplus extends Component {
 
     this.state = {
       showSplash: true,
-      index: 1,
-      autoPlay: false
+      addingNew: false
     }
   }
   _changeIndex() {
     this.refs['swiper'].scrollBy(1)
   }
+  _addNew() {
+    this.setState({addingNew: true}, () => {
+      this.refs['swiper'].scrollBy(2)
+    })
+  }
+  _closeReport() {
+    this.setState({addingNew: false})
+  }
   render() {
-    const { index, showSplash } = this.state;
+    const {showSplash, addingNew} = this.state;
     if (showSplash) {
       setTimeout(() => this.setState({showSplash: false}), 1000);
     }
+    
+    const screens = [
+      <Chat key="chat" back={this._changeIndex.bind(this)}/>,
+      <Report key="report" newReport={this._addNew.bind(this)}/>];
 
+    if (addingNew)
+      screens.push(<NewReport key="newReport" submit={this._closeReport.bind(this)}/>);
     return (
+<<<<<<< HEAD
       <TakePicture/>
+=======
+      this.state.showSplash? <Splash/>: 
+      <Swiper
+        ref={'swiper'}
+        loop={false}
+        showsPagination={false}
+        showButtons={true}
+        autoplay={this.state.autoPlay}
+        index={1}>
+        {screens}
+      </Swiper>
+>>>>>>> 8e161b4fcf34cb2ed4cf098027be0540a431d660
     )
 
 

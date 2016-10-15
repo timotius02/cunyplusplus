@@ -59,13 +59,13 @@ export default class NewReport extends Component {
 
 					<View style = { styles.inlineButtons }>
 
-						<TouchableOpacity onPress={this._onPressButton}>
+						<TouchableOpacity onPress={this.props.submit}>
 	  		    	<View style = { [styles.button, { backgroundColor: Utils.COLORS.grey }] }>
 								<Text style = { styles.text }>Cancel</Text>			
 							</View>
 						</TouchableOpacity>
 											
-						<TouchableOpacity onPress={this._onPressButton}>
+						<TouchableOpacity onPress={this.props.submit}>
  	 		  	  	<View style = { [styles.button, { backgroundColor: Utils.COLORS.blue}] }>
 												<Text style = { [styles.text, { color: '#fff'}] }>Submit</Text>			
 							</View>
