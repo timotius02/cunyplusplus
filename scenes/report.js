@@ -9,12 +9,10 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import * as firebase from 'firebase';
 
 import Utils from '../utils'
 
 import ActionButton from 'react-native-action-button';
-
 
 
 const data  = [{
@@ -49,19 +47,69 @@ export default class Reports extends Component {
 
     this.state = {
       searchValue: '',
-      showCompleted: false
+      showCompleted: false,
+      data: []
     }
+
+    this.itemsRef = this.getRef('case');
 
     this._showOpen.bind(this);
     this._showClosed.bind(this);
+
+    this.listenForItems.bind(this);
   }
 
-
+  getRef() {
+    return this.props.firebaseApp.database().ref();
+  }
   _showOpen(){
     this.setState({showCompleted: false});
   }
   _showClosed() {
     this.setState({showCompleted: true});
+  }
+
+  listenForItems(itemsRef) {
+    itemsRef.once('value', (snap) => {
+      Object.keys(snap.val().case).map((key)=> {
+        const problem = snap.val().case[key].problem;
+
+        let color = 'red';
+
+        if (problem.urgency === 'medium') {
+          color = 'yellow'
+        }
+        else if( problem.urgency === 'low') {
+          color = 'green'
+        }
+        const newData = {
+            key,
+            problem: problem.description,
+            date: problem.date,
+            color,
+            completed: problem.completed
+        }
+
+        if (data.problem !== null) {
+          this.setState({
+            data: [...this.state.data, newData]
+          })
+        }
+
+      })
+
+    });
+  }
+
+  componentDidMount() {
+    this.listenForItems(this.itemsRef);
+  }
+  // componentUpdate() {
+  //   this.listenForItems(this.itemsRef);
+  // }
+
+  _newChat(key) {
+    this.props.chat(key);
   }
   render() {
     const { searchValue, showCompleted } = this.state;
@@ -91,7 +139,7 @@ export default class Reports extends Component {
 
         <View>
 
-          {data.filter((row)=> {
+          {this.state.data.filter((row)=> {
             if (searchValue === '') {
               return true
             }
@@ -101,7 +149,7 @@ export default class Reports extends Component {
           }).map((row, index) => {
             if (showCompleted === row.completed ) {
               return (
-                <TouchableOpacity key={index} onPress={this._showClosed.bind(this)}>
+                <TouchableOpacity key={index} onPress={this._newChat.bind(this, row.key)}>
                   <View style={styles.row} >
                     <View style={styles.checkContainer}>
                       {row.completed ? 

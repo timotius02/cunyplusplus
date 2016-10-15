@@ -20,13 +20,20 @@ import TakePicture from './scenes/TakePicture';
 
 import Swiper from 'react-native-swiper';
 
+import * as firebase from 'firebase';
+
+import firebaseConfig from './utils/config';
+
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+
 export default class cunyplusplus extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       showSplash: true,
-      addingNew: false
+      addingNew: false,
+      key: 'case1'
     }
   }
   _changeIndex() {
@@ -44,8 +51,14 @@ export default class cunyplusplus extends Component {
     this.refs['swiper'].scrollBy(1)
   }
   _handlePic(data) {
-    console.log(data);
+  
     this.setState({addingPic: false})
+  }
+  _createChat(key) {
+    this.setState({key}, ()=> {
+      console.log(this.state.key)
+      this.forceUpdate();
+    })
   }
   render() {
     const {showSplash, addingNew, addingPic} = this.state;
@@ -54,13 +67,13 @@ export default class cunyplusplus extends Component {
     }
     
     const screens = [
-      <Chat key="chat" back={this._changeIndex.bind(this)}/>,
-      <Report key="report" newReport={this._addNew.bind(this)}/>];
+      <Chat key="chat" firebaseApp={firebaseApp} reportKey={this.state.key} back={this._changeIndex.bind(this)}/>,
+      <Report key="report" firebaseApp={firebaseApp} newReport={this._addNew.bind(this)} chat={this._createChat.bind(this)}/>];
 
     if (addingNew)
       screens.push(<NewReport key="newReport" submit={this._closeReport.bind(this)} takePicture={this._picture.bind(this)}/>);
     if (addingPic)
-      screens.pusn(<TakePicture key="picture" picture={this._handlePic.bind(this)}/>)
+      screens.push(<TakePicture key="picture" picture={this._handlePic.bind(this)}/>)
     return (
       this.state.showSplash? <Splash/>: 
       <Swiper

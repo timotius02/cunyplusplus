@@ -16,41 +16,104 @@ export default class Chat extends Component {
     super(props);
 
     this.state = {
-      userId: 0,
-      chat: [{
-        userId: 0,
-        text: 'hello its me'
-      }, {
-        userId: 1,
-        text: 'hello its you'
-      }, {
-        userId: 1,
-        text: 'no its me'
-      }, {
-        userId: 0,
-        text: 'lets ponder some exastential problems?'
-      }, {
-        userId: 1,
-        text: 'Nah'
-      }, {
-        userId: 0,
-        text: 'Alright then'
-      }] 
+      userId: 'Peter L',
+      title: '',
+      // chat: [{
+      //   userId: 0,
+      //   text: 'hello its me'
+      // }, {
+      //   userId: 1,
+      //   text: 'hello its you'
+      // }, {
+      //   userId: 1,
+      //   text: 'no its me'
+      // }, {
+      //   userId: 0,
+      //   text: 'lets ponder some exastential problems?'
+      // }, {
+      //   userId: 1,
+      //   text: 'Nah'
+      // }, {
+      //   userId: 0,
+      //   text: 'Alright then'
+      // }] 
+      chat: []
     }
+
+    this.itemsRef = this.getRef('case');
 
     this._submit.bind(this);
   }
+  getRef() {
+    return this.props.firebaseApp.database().ref();
+  }
   _submit(event) {
     this.refs["chat"].clear(0);
-    this.setState({chat: [...this.state.chat, {userId: this.state.userId, text: event.nativeEvent.text}]})
+
+    this.setState({
+      chat: [...this.state.chat, {userId: this.state.userId, text: event.nativeEvent.text}]
+    })
+    this.props.firebaseApp.database().ref('case/' + this.props.reportKey + '/messages').push({
+      text: event.nativeEvent.text,
+      name: this.state.userId
+    });
   }
+  listenForItems(itemsRef) {
+    itemsRef.once('value', (snap) => {
+
+      Object.values(snap.val().case[this.props.reportKey].messages).map((val) => {
+        const stuff = {
+          text: val.text, 
+          userId: val.name
+        }
+        this.setState({
+            chat: [...this.state.chat, stuff],
+            title: snap.val().case[this.props.reportKey].problem.description
+          })
+      })
+      // console.log(snap.val().case[this.props.key].problem)
+      // Object.keys(snap.val().case).map((key)=> {
+      //   const problem = snap.val().case[key].problem;
+
+      //   let color = 'red';
+
+      //   if (problem.urgency === 'medium') {
+      //     color = 'yellow'
+      //   }
+      //   else if( problem.urgency === 'low') {
+      //     color = 'green'
+      //   }
+      //   const newData = {
+      //       key,
+      //       problem: problem.description,
+      //       date: problem.date,
+      //       color,
+      //       completed: problem.completed
+      //   }
+
+        // console.log(newData)
+        // if (data.problem !== null) {
+        //   this.setState({
+        //     data: [...this.state.data, newData]
+        //   })
+        // }
+
+      // })
+
+    });
+  }
+
+  componentDidMount() {
+    this.listenForItems(this.itemsRef);
+  }
+
   render() {
     const { userId, chat } = this.state;
     return (
       <View style={styles.body}>
 
         <View style={styles.header}>
-          <Text style={styles.title}>Printer out of Paper</Text>
+          <Text style={styles.title}>{this.state.title}</Text>
           <TouchableOpacity style={styles.arrow} onPress={this.props.back}>
             <Image source={require('../img/arrow.png')}/>
           </TouchableOpacity>
