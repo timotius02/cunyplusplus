@@ -54,7 +54,15 @@ export default class cunyplusplus extends Component {
       screens.push(<NewReport key="newReport" submit={this._closeReport.bind(this)}/>);
     return (
       this.state.showSplash? <Splash/>: 
-      <TakePicture />
+      <Swiper
+        ref={'swiper'}
+        loop={false}
+        showsPagination={false}
+        showButtons={true}
+        autoplay={this.state.autoPlay}
+        index={1}>
+        {screens}
+      </Swiper>
     )
 
 
