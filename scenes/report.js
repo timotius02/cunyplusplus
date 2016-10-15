@@ -104,7 +104,7 @@ export default class Reports extends Component {
   componentDidMount() {
     this.listenForItems(this.itemsRef);
   }
-  // componentUpdate() {
+  // componentWillUpdate() {
   //   this.listenForItems(this.itemsRef);
   // }
 

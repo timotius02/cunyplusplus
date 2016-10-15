@@ -11,6 +11,7 @@ export default class NewReport extends Component {
 			categoryValue : 'Category',
 			problemValue : '',
 			locationValue : '',
+			urgencyValue : '',
 			pictureValue : 'Take Picture',
 			cancelValue : 'Cancel',
 			submitValue : 'Submit'
@@ -21,6 +22,7 @@ export default class NewReport extends Component {
 		const { categoryValue } = this.state;
 		const { problemValue } = this.state;
 		const { locationValue } = this.state;
+		const { urgencyValue } = this.state;
 
 		return(
 			<View>
@@ -36,10 +38,12 @@ export default class NewReport extends Component {
 	  					selectedValue={ categoryValue }
 	  					onValueChange={ this.onValueChange.bind(this, 'categoryValue')}>
 	  					<Picker.Item label="Category" value="Category" />
-	  					<Picker.Item label="General" value="General" />
-	  					<Picker.Item label="Smoking" value="Smoking" />
-	  					<Picker.Item label="Material Request" value="MaterialRequest" />
-	  					<Picker.Item label="Noise Complaint" value="NoiseComplaint" />
+	  					<Picker.Item label="IT Issues" value="ITIssues" />
+	  					<Picker.Item label="Building" value="Building" />
+	  					<Picker.Item label="Sexual Harassment" value="SexualHarass" />
+	  					<Picker.Item label="Sanitary Services" value="SanitaryServ" />
+	  					<Picker.Item label="Emergency" value="Emergency" />
+	  					<Picker.Item label="Other" value="Other" />
 						</Picker>
 					</View>
 
@@ -53,6 +57,18 @@ export default class NewReport extends Component {
 						onChangeText = {(text) => this.setState({ locationValue: text})}
 						placeholder = { 'Location...' }>
 					</TextInput>
+										
+					<View style={styles.pickerContainer}>
+						<Picker
+							style = { styles.picker }
+	  					selectedValue={ urgencyValue }
+	  					onValueChange={ this.onValueChange.bind(this, 'urgencyValue')}>
+	  					<Picker.Item label="Urgency" value="Urgency" />
+	  					<Picker.Item label="Low" value= "Low" />
+	  					<Picker.Item label="Medium" value="Medium" />
+	  					<Picker.Item label="High" value="High" />
+						</Picker>
+					</View>
 										
 					<TouchableOpacity onPress={this.props.takePicture}>
   		    	<View style = { styles.picture }>
