@@ -14,7 +14,7 @@ export default class Splash extends Component {
   render() {
     return (
       <Image source={require('../img/blue-nyc.png')} style={styles.backgroundImage}> 
-        <StatusBar hidden={true} />
+
         <Image source={require('../img/logo.png')} style={styles.logo}/>
       </Image>
     )

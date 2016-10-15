@@ -54,7 +54,7 @@ export default class NewReport extends Component {
 						placeholder = { 'Location...' }>
 					</TextInput>
 										
-					<TouchableOpacity onPress={this._onPressButton}>
+					<TouchableOpacity onPress={this.props.takePicture}>
   		    	<View style = { styles.picture }>
 							<Text style={[styles.text, styles.cameraText]}>Snap a Photo</Text>		
 							<Image style={styles.camera}source={require('../img/camera.png')}/>

@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View } from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import Camera from 'react-native-camera';
 import Utils from '../utils';
 
 export default class TakePicture extends Component{
+  takePicture(){
+    this.camera.capture()
+      .then((data) => this.props.picture(data))
+      .catch(err => console.error(err));
+  }
 	render(){
 		return(
 			<View>
@@ -11,17 +16,15 @@ export default class TakePicture extends Component{
 						ref={(cam) => { this.camera = cam}}
 						style={ styles.preview }
 						aspect={ Camera.constants.Aspect.fill }>
-						<Text style = { styles.capture } onPress = { this.takePicture.bind(this) }>CAPTURE</Text>
+            <TouchableOpacity style={styles.capture} onPress={this.takePicture.bind(this)}>
+              <Image source={require('../img/cameraButton.png')} />
+            </TouchableOpacity>
+						
 				</Camera>
 			</View>	
 		)
 	}
 	
-	takePicture(){
-		this.camera.capture()
-			.then((data) => console.log(data))
-			.catch(err => console.error(err));
-	}
 }
 
 const styles = StyleSheet.create({
@@ -37,9 +40,7 @@ const styles = StyleSheet.create({
   },
   capture: {
     flex: 0,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    color: '#000',
+
     padding: 10,
     margin: 40
   }

@@ -33,15 +33,22 @@ export default class cunyplusplus extends Component {
     this.refs['swiper'].scrollBy(1)
   }
   _addNew() {
-    this.setState({addingNew: true}, () => {
-      this.refs['swiper'].scrollBy(2)
+    this.setState({addingNew: true, addingPic: true}, () => {
+      this.refs['swiper'].scrollBy(1)
     })
   }
   _closeReport() {
-    this.setState({addingNew: false})
+    this.setState({addingNew: false, addingPic: false})
+  }
+  _picture() {
+    this.refs['swiper'].scrollBy(1)
+  }
+  _handlePic(data) {
+    console.log(data);
+    this.setState({addingPic: false})
   }
   render() {
-    const {showSplash, addingNew} = this.state;
+    const {showSplash, addingNew, addingPic} = this.state;
     if (showSplash) {
       setTimeout(() => this.setState({showSplash: false}), 1000);
     }
@@ -51,15 +58,15 @@ export default class cunyplusplus extends Component {
       <Report key="report" newReport={this._addNew.bind(this)}/>];
 
     if (addingNew)
-      screens.push(<NewReport key="newReport" submit={this._closeReport.bind(this)}/>);
+      screens.push(<NewReport key="newReport" submit={this._closeReport.bind(this)} takePicture={this._picture.bind(this)}/>);
+    if (addingPic)
+      screens.pusn(<TakePicture key="picture" picture={this._handlePic.bind(this)}/>)
     return (
       this.state.showSplash? <Splash/>: 
       <Swiper
         ref={'swiper'}
         loop={false}
         showsPagination={false}
-        showButtons={true}
-        autoplay={this.state.autoPlay}
         index={1}>
         {screens}
       </Swiper>

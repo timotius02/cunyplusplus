@@ -9,9 +9,12 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+import * as firebase from 'firebase';
+
 import Utils from '../utils'
 
 import ActionButton from 'react-native-action-button';
+
 
 
 const data  = [{
@@ -52,6 +55,8 @@ export default class Reports extends Component {
     this._showOpen.bind(this);
     this._showClosed.bind(this);
   }
+
+
   _showOpen(){
     this.setState({showCompleted: false});
   }
@@ -96,24 +101,26 @@ export default class Reports extends Component {
           }).map((row, index) => {
             if (showCompleted === row.completed ) {
               return (
-                <View style={styles.row} key={index}>
-                  <View style={styles.checkContainer}>
-                    {row.completed ? 
-                      <Image source={require('../img/checked.png')}/> : 
-                      <Image source={require('../img/unchecked.png')}/>}
-                  </View>
-                  <View style={styles.description}>
-                    <Text style={styles.problem}>{row.problem}</Text>
-                    <Text style={styles.date}>Submitted on {row.date}</Text>
-                  </View>
-                  <View style={styles.colorContainer}>
+                <TouchableOpacity key={index} onPress={this._showClosed.bind(this)}>
+                  <View style={styles.row} >
+                    <View style={styles.checkContainer}>
+                      {row.completed ? 
+                        <Image source={require('../img/checked.png')}/> : 
+                        <Image source={require('../img/unchecked.png')}/>}
+                    </View>
+                    <View style={styles.description}>
+                      <Text style={styles.problem}>{row.problem}</Text>
+                      <Text style={styles.date}>Submitted on {row.date}</Text>
+                    </View>
+                    <View style={styles.colorContainer}>
 
-                      <View style={[styles.color, {backgroundColor: row.color}]}>
-                        
-                      </View>
+                        <View style={[styles.color, {backgroundColor: row.color}]}>
+                          
+                        </View>
 
+                    </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               )
             }
           })}
@@ -201,7 +208,9 @@ const styles = StyleSheet.create({
   },
   colorContainer: {
     flex: 1,
-    alignItems: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   color: {
     height: 15,
