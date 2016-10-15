@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet, Picker, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Picker, TouchableOpacity, Image } from 'react-native';
 import Utils from '../utils'
 
 
@@ -9,8 +9,8 @@ export default class NewReport extends Component {
 
 		this.state = {
 			categoryValue : 'Category',
-			problemValue : 'Problem...',
-			locationValue : 'Location...',
+			problemValue : '',
+			locationValue : '',
 			pictureValue : 'Take Picture',
 			cancelValue : 'Cancel',
 			submitValue : 'Submit'
@@ -29,45 +29,50 @@ export default class NewReport extends Component {
 				</View>
 
 				<View style = { styles.criteria }>
+					
+					<View style={styles.pickerContainer}>
+						<Picker
+							style = { styles.picker }
+	  					selectedValue={ categoryValue }
+	  					onValueChange={ this.onValueChange.bind(this, 'categoryValue')}>
+	  					<Picker.Item label="Category" value="Category" />
+	  					<Picker.Item label="General" value="General" />
+	  					<Picker.Item label="Smoking" value="Smoking" />
+	  					<Picker.Item label="Material Request" value="MaterialRequest" />
+	  					<Picker.Item label="Noise Complaint" value="NoiseComplaint" />
+						</Picker>
+					</View>
 
-					<Picker
-						style = { styles.picker }
-  					selectedValue={ categoryValue }
-  					onValueChange={ this.onValueChange.bind(this, 'categoryValue')}>
-  					<Picker.Item label="Category" value="Category" />
-  					<Picker.Item label="General" value="General" />
-  					<Picker.Item label="Smoking" value="Smoking" />
-  					<Picker.Item label="Material Request" value="MaterialRequest" />
-  					<Picker.Item label="Noise Complaint" value="NoiseComplaint" />
-					</Picker>
 
 					<TextInput style = { styles.textInput }
 						onChangeText = {(text) => this.setState({ problemValue: text})}
-						value = { this.state.problemValue }>	
+						placeholder = { 'Problem...' }>	
 					</TextInput>
 
 					<TextInput style = { styles.textInput }
 						onChangeText = {(text) => this.setState({ locationValue: text})}
-						value = { this.state.locationValue }>
+						placeholder = { 'Location...' }>
 					</TextInput>
 										
 					<TouchableOpacity onPress={this._onPressButton}>
   		    	<View style = { styles.picture }>
-							<Text style = { styles.text }>Snap a Photo</Text>			
+							<Text style={[styles.text, styles.cameraText]}>Snap a Photo</Text>		
+							<Image style={styles.camera}source={require('../img/camera.png')}/>
 						</View>
 					</TouchableOpacity>
 
 					<View style = { styles.inlineButtons }>
 
-						<TouchableOpacity onPress={this.props.submit}>
-	  		    	<View style = { [styles.button, { backgroundColor: Utils.COLORS.grey }] }>
+						<TouchableOpacity style={styles.button} onPress={this.props.submit}>
+	  		    	<View style = {[ styles.buttonInside, { backgroundColor: Utils.COLORS.grey }]}>
 								<Text style = { styles.text }>Cancel</Text>			
 							</View>
 						</TouchableOpacity>
 											
-						<TouchableOpacity onPress={this.props.submit}>
- 	 		  	  	<View style = { [styles.button, { backgroundColor: Utils.COLORS.blue}] }>
-												<Text style = { [styles.text, { color: '#fff'}] }>Submit</Text>			
+						<TouchableOpacity style={styles.button} onPress={this.props.submit}>
+ 	 		  	  	<View style = { [styles.buttonInside, { backgroundColor: Utils.COLORS.blue} ]}>
+												<Text style = { [styles.text, { color: '#fff'}] }>Submit</Text>
+
 							</View>
 						</TouchableOpacity>
 					</View>
@@ -85,64 +90,72 @@ export default class NewReport extends Component {
 
 const styles = StyleSheet.create({
 	inlineButtons:{
-		marginTop:			12,
+				margin:				Utils.WIDTH_UNIT/2,
 		flexDirection: 'row',
 	},
 	button: {
 		flex: 1,
     height: 					Utils.HEIGHT_UNIT,
-    justifyContent: 	'center',
-    paddingTop:				8,
-    paddingBottom:		8,
-		paddingLeft: 			20,
-		paddingRight:			20,
-    borderRadius: 		10,
-    borderRadius: 		10,
-    justifyContent: 	'center',
 		marginLeft:				Utils.WIDTH_UNIT/2,
-		marginRight:			Utils.WIDTH_UNIT/2,				
+		marginRight:			Utils.WIDTH_UNIT/2,			
+		alignItems: 'stretch',
+
+	},
+	buttonInside: {
+		borderRadius: 10,
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		padding: 15
 	},
 	header: {
 		height: 					Utils.HEIGHT_UNIT * 1.5,
 		backgroundColor: 	Utils.COLORS.blue,
 		flexDirection: 		'row',
-		alignItems: 			'flex-end',
-		justifyContent:		'center',
+		alignItems: 			'center',
 	},
 	headerText: {
-		marginBottom:			12,
-		fontSize:					18,
-    textAlign: 				'center',
+		flex: 1,
+		textAlign: 'center',
     color: 						'#fff',
-		alignItems:				'center',
+    fontWeight: '600'
   },
 	text:{
-		fontSize:					12,
 		color:						'#000',
 	},
 	criteria:{
 		marginTop:				60,
 		alignItems: 			'center'
 	},
-	picker: {
+	pickerContainer: {
 		margin:						8,
-		width: 						Utils.WIDTH_UNIT * 10,
+		width: 						Utils.WIDTH_UNIT * 14,
+		height: Utils.HEIGHT_UNIT * 1.5,
 		borderWidth:			2,
 		borderColor: 			Utils.COLORS.grey,	
 	},
 	textInput: {
 		margin:						8,
-		width: 						Utils.WIDTH_UNIT * 10,
+		width: 						Utils.WIDTH_UNIT * 14,
+		paddingLeft: Utils.WIDTH_UNIT * 0.5,
+		height: Utils.HEIGHT_UNIT * 1.5,
 		borderWidth:			2,
 		borderColor: 			Utils.COLORS.grey,	
 	},
 	picture:{
-		margin:						10,
+		margin:						8,
 		padding:					8,
 		borderWidth:		 	2,
 		borderRadius:			Utils.HEIGHT_UNIT * .125,
 		borderColor: 			Utils.COLORS.grey,	
 		width: 						Utils.WIDTH_UNIT * 10,
+		flexDirection: 'row'
+	},
+	cameraText: {
+		flex: 8,
+	},
+	camera: {
+
 	}
 
 });
