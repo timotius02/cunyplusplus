@@ -54,6 +54,18 @@ export default class NewReport extends Component {
 						placeholder = { 'Location...' }>
 					</TextInput>
 										
+					<View style={styles.pickerContainer}>
+						<Picker
+							style = { styles.picker }
+	  					selectedValue={ urgencyValue }
+	  					onValueChange={ this.onValueChange.bind(this, 'urgencyValue')}>
+	  					<Picker.Item label="Urgency" value="Urgency" />
+	  					<Picker.Item label="Low" value= "Low" />
+	  					<Picker.Item label="Medium" value="Medium" />
+	  					<Picker.Item label="High" value="High" />
+						</Picker>
+					</View>
+										
 					<TouchableOpacity onPress={this.props.takePicture}>
   		    	<View style = { styles.picture }>
 							<Text style={[styles.text, styles.cameraText]}>Snap a Photo</Text>		
