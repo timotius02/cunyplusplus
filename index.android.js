@@ -60,7 +60,7 @@ export default class cunyplusplus extends Component {
     if (addingNew)
       screens.push(<NewReport key="newReport" submit={this._closeReport.bind(this)} takePicture={this._picture.bind(this)}/>);
     if (addingPic)
-      screens.pusn(<TakePicture key="picture" picture={this._handlePic.bind(this)}/>)
+      screens.push(<TakePicture key="picture" picture={this._handlePic.bind(this)}/>)
     return (
       this.state.showSplash? <Splash/>: 
       <Swiper
