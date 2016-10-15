@@ -3,45 +3,136 @@ import {
   View,
   Text,
   TextInput,
-  StyleSheet
+  StyleSheet,
+  ListView,
+  Image,
+  TouchableOpacity
 } from 'react-native';
 
 import Utils from '../utils'
 
+import ActionButton from 'react-native-action-button';
+
+
+const data  = [{
+  problem: 'Broken Elevator',
+  date: '10/14/16',
+  color: 'yellow',
+  completed: false
+}, {
+  problem: 'Out of Toilet Paper',
+  date: '10/14/16',
+  color: 'red',
+  completed: false
+}, {
+  problem: 'Broken Printer',
+  date: '10/13/16',
+  color: 'yellow',
+  completed: true
+},{
+  problem: 'Coffeee Spill',
+  date: '10/13/16',
+  color: 'yellow',
+  completed: true
+},{
+  problem: 'Printer out of Paper',
+  date: '10/13/16',
+  color: 'green',
+  completed: true
+}]
 export default class Reports extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      searchValue: 'Search...'
+      searchValue: '',
+      showCompleted: false
     }
+
+    this._showOpen.bind(this);
+    this._showClosed.bind(this);
+  }
+  _showOpen(){
+    this.setState({showCompleted: false});
+  }
+  _showClosed() {
+    this.setState({showCompleted: true});
   }
   render() {
-    const { searchValue } = this.state;
+    const { searchValue, showCompleted } = this.state;
 
     return (
-      <View>
+      <View style={styles.body}>
         <View style={styles.header}>
-          <View style={styles.tab}>
-            <Text style={[styles.text, styles.openText]}>Open Report</Text>
+          <View style={[styles.tab, showCompleted ? styles.closeTab: null]}>
+            <TouchableOpacity onPress={this._showOpen.bind(this)}>
+              <Text style={[styles.text, showCompleted ? null: styles.openText]}>Open Report</Text>
+            </TouchableOpacity>
           </View>
-          <View style={[styles.tab, styles.closeTab]}>
-            <Text style={styles.text}>Closed Report</Text>
+          <View style={[styles.tab, showCompleted ?  null : styles.closeTab]}>
+            <TouchableOpacity onPress={this._showClosed.bind(this)}>
+            <Text style={[styles.text, showCompleted ? styles.openText: null]}>Closed Report</Text>
+            </TouchableOpacity>
           </View>
         </View>
           
         <View style={styles.search}>
           <TextInput style={styles.searchBox}
+            underlineColorAndroid="transparent"
             onChangeText={(text) => this.setState({searchValue: text})}
-            value={searchValue}
+            placeholder={'Search...'}
           />
         </View>
+
+        <View>
+
+          {data.filter((row)=> {
+            if (searchValue === '') {
+              return true
+            }
+            else {
+              return row.problem.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1
+            }
+          }).map((row, index) => {
+            if (showCompleted === row.completed ) {
+              return (
+                <View style={styles.row} key={index}>
+                  <View style={styles.checkContainer}>
+                    {row.completed ? 
+                      <Image source={require('../img/checked.png')}/> : 
+                      <Image source={require('../img/unchecked.png')}/>}
+                  </View>
+                  <View style={styles.description}>
+                    <Text style={styles.problem}>{row.problem}</Text>
+                    <Text style={styles.date}>Submitted on {row.date}</Text>
+                  </View>
+                  <View style={styles.colorContainer}>
+
+                      <View style={[styles.color, {backgroundColor: row.color}]}>
+                        
+                      </View>
+
+                  </View>
+                </View>
+              )
+            }
+          })}
+        </View>
+        <ActionButton
+          buttonColor="rgb(30,89,174)"
+          offsetY={10}
+          onPress={() => { console.log("hi")}}
+        />
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  body: {
+    backgroundColor: '#fff',
+    height: Utils.REAL_HEIGHT
+  },
   tab: {
     flex: 1,
     backgroundColor: '#fff',
@@ -75,14 +166,46 @@ const styles = StyleSheet.create({
     borderColor: Utils.COLORS.grey,
     borderWidth: 2,
     marginTop: Utils.HEIGHT_UNIT * 0.5,
+    marginBottom: Utils.HEIGHT_UNIT * 0.5,
     borderRadius: Utils.HEIGHT_UNIT * 1.5,
     justifyContent: 'center',
     marginLeft: Utils.WIDTH_UNIT,
-    marginRight: Utils.WIDTH_UNIT
+    marginRight: Utils.WIDTH_UNIT,
   },
   searchBox: {
     flex: 1,
     marginLeft: Utils.WIDTH_UNIT,
     marginRight: Utils.WIDTH_UNIT
+  },
+  row: {
+    flexDirection: 'row',
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderColor: Utils.COLORS.grey,
+    borderWidth: 1
+  },
+  checkContainer: {
+    flex: 1,
+    alignItems: 'center'
+  },
+  description: {
+    flex: 4
+  },
+  problem : {
+    fontWeight: '900',
+    color: '#000'
+  },
+  date: {
+    fontStyle: 'italic',
+    fontSize: 12
+  },
+  colorContainer: {
+    flex: 1,
+    alignItems: 'flex-start',
+  },
+  color: {
+    height: 15,
+    width: 15,
+    borderRadius: 15
   }
 });
