@@ -11,6 +11,7 @@ export default class NewReport extends Component {
 			categoryValue : 'Category',
 			problemValue : '',
 			locationValue : '',
+			urgencyValue : '',
 			pictureValue : 'Take Picture',
 			cancelValue : 'Cancel',
 			submitValue : 'Submit'
@@ -21,6 +22,7 @@ export default class NewReport extends Component {
 		const { categoryValue } = this.state;
 		const { problemValue } = this.state;
 		const { locationValue } = this.state;
+		const { urgencyValue } = this.state;
 
 		return(
 			<View>
