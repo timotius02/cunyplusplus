@@ -9,8 +9,8 @@ export default class TakePicture extends Component{
 			<View>
 				<Camera 
 						ref={(cam) => { this.camera = cam}}
-						style = { styles.preview }
-						aspect = { Camera.constants.Aspect.fill }>
+						style={ styles.preview }
+						aspect={ Camera.constants.Aspect.fill }>
 						<Text style = { styles.capture } onPress = { this.takePicture.bind(this) }>CAPTURE</Text>
 				</Camera>
 			</View>	
