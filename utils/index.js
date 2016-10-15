@@ -1,5 +1,6 @@
 
 import Dimensions from 'Dimensions';
+import { StatusBar } from 'react-native';
 
 // Precalculate Device Dimensions for better performance
 const x = Dimensions.get('window').width;
@@ -38,6 +39,8 @@ export default {
   UNIT: em(1),
   PADDING: em(1.25),
   em,
+
+  REAL_HEIGHT: y - StatusBar.currentHeight,
 
   // App specific Height Unit
   HEIGHT_UNIT: y / 18,

@@ -14,23 +14,43 @@ import {
 
 import Splash from './scenes/splash';
 import Report from './scenes/report';
+import Chat from './scenes/chat';
+
+import Swiper from 'react-native-swiper';
 
 export default class cunyplusplus extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      showSplash: true
+      showSplash: true,
+      index: 1,
+      autoPlay: false
     }
   }
+  _changeIndex() {
+    this.refs['swiper'].scrollBy(1)
+  }
   render() {
-    if (this.state.showSplash) {
+    const { index, showSplash } = this.state;
+    if (showSplash) {
       setTimeout(() => this.setState({showSplash: false}), 1000);
     }
 
-    return  <Report/>;
+    return (
+      this.state.showSplash? <Splash/>: 
+      <Swiper
+        ref={'swiper'}
+        loop={false}
+        showsPagination={false}
+        showButtons={true}
+        autoplay={this.state.autoPlay}
+        index={1}>
+        <Chat back={this._changeIndex.bind(this)}/>
+        <Report />
 
-    //this.state.showSplash? <Splash/>: <View><Text>Success</Text></View>
+      </Swiper>
+    )
 
 
   }
