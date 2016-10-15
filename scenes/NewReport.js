@@ -127,11 +127,13 @@ const styles = StyleSheet.create({
 	picker: {
 		margin:						8,
 		width: 						Utils.WIDTH_UNIT * 10,
+		borderWidth:			2,
 		borderColor: 			Utils.COLORS.grey,	
 	},
 	textInput: {
 		margin:						8,
 		width: 						Utils.WIDTH_UNIT * 10,
+		borderWidth:			2,
 		borderColor: 			Utils.COLORS.grey,	
 	},
 	picture:{

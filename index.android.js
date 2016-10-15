@@ -15,6 +15,7 @@ import {
 import Splash from './scenes/splash';
 import Report from './scenes/report';
 import Chat from './scenes/chat';
+import NewReport from './scenes/NewReport';
 
 import Swiper from 'react-native-swiper';
 
@@ -38,18 +39,7 @@ export default class cunyplusplus extends Component {
     }
 
     return (
-      this.state.showSplash? <Splash/>: 
-      <Swiper
-        ref={'swiper'}
-        loop={false}
-        showsPagination={false}
-        showButtons={true}
-        autoplay={this.state.autoPlay}
-        index={1}>
-        <Chat back={this._changeIndex.bind(this)}/>
-        <Report />
-
-      </Swiper>
+      <NewReport/>
     )
 
 
