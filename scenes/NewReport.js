@@ -37,6 +37,7 @@ export default class NewReport extends Component {
 							style = { styles.picker }
 	  					selectedValue={ categoryValue }
 	  					onValueChange={ this.onValueChange.bind(this, 'categoryValue')}>
+	  					<Picker.Item label="Category" value="Category" />
 	  					<Picker.Item label="IT Issues" value="ITIssues" />
 	  					<Picker.Item label="Building" value="Building" />
 	  					<Picker.Item label="Sexual Harassment" value="SexualHarass" />
